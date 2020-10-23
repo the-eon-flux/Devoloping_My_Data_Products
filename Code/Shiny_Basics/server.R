@@ -37,11 +37,13 @@ shinyServer(function(input, output) {
     output$EruptionTimePlot <- renderPlot({
         
         fit <- lm(eruptions ~ waiting, faithful)
+        stat <- statInput()
+        faithful$New <- sapply(faithful$eruptions, function(x){if(x >=stat(faithful$eruptions)){1}else(2)})
         
-        plot(eruptions ~ waiting,faithful, ylab="Eruption time (mins)", xlab= "Waiting time for next eruption (mins)" , col = faithful$New, type ="p", pch = 16, main = "Eruption Time ~ Waiting Time; Linear model Fit", cex.axis = 1.2)
+        plot(eruptions ~ waiting, faithful, ylab="Eruption time (mins)", xlab= "Waiting time for next eruption (mins)" , col = faithful$New, type ="p", pch = 16, main = "Eruption Time ~ Waiting Time; Linear model Fit", cex.axis = 1.2)
         abline(fit, lwd = 2, col ="dodgerblue")
         
-        stat <- statInput()
+        
         abline(h=stat(faithful$eruptions), col =2 )
         
         Cap <- statCaption()
