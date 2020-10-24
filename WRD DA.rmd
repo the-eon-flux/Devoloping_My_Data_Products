@@ -1,0 +1,127 @@
+---
+title: "World Religion Data"
+author: "Tejus"
+date: "25/10/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(reshape2)
+library(plotly)
+
+Df <- read.csv("./Code/WRP national data.csv", header = T)
+ColI <- c(1,2,3,9,22,26,27,28)
+FinalDf <- as.data.frame(Df[,ColI])
+
+```
+
+
+## Introduction
+
+* This dataset provides information regarding the number of adherents by 
+religion, as well as the percent of the state's population practicing a 
+given religion, **observed at five-year intervals**. 
+
+* Data for the following 4 countries is plotted here : 
+
+      - India (IND)
+      - United States of America (US)
+      - Pakistan (PAK)
+      - China (CHN)
+
+## World Religion Project : Indian Data
+
+```{r Religion, echo = FALSE}
+# India Data
+IND_Data <- subset(FinalDf, name == "IND")
+colnames(IND_Data) <- c("Year", "State", "Country","Christians", "Muslims", "Buddhist", "Jains", "Hindus")
+Ind_Melted <- melt(IND_Data, id = c("Year", "State", "Country"), measure.vars = c("Christians", "Muslims", "Buddhist", "Jains", "Hindus") )
+
+# Plotting
+g <- ggplot(Ind_Melted, aes(x = Year, y = value/10000 )) + geom_point(size = 2, aes(color=variable)) + labs(title = "Time Series of Indian Population Growth") + labs(x= "Year", y = "10K Population Count")
+ggplotly(g)
+
+
+```
+
+* Hover over each point for more info at that point.
+
+## World Religion Project : US data
+
+```{r US_Data, echo=FALSE }
+# US Data
+US_Data <- subset(FinalDf, name == "USA")
+colnames(US_Data) <- c("Year", "State", "Country","Christians", "Muslims", "Buddhist", "Jains", "Hindus")
+US_Melted <- melt(US_Data, id = c("Year", "State", "Country"), measure.vars = c("Christians", "Muslims", "Buddhist", "Jains", "Hindus") )
+
+# Plotting
+g <- ggplot(US_Melted, aes(x = Year, y = value/10000)) + geom_point(size = 2, aes(color=variable)) + labs(title = "Time Series of US Population Growth") + labs(x= "Year", y = "10K Population Count")
+ggplotly(g)
+
+
+```
+
+
+* Hover over each point for more info at that point.
+
+## World Religion Project : Pakistan Data
+
+```{r PAK, echo=FALSE}
+# PAK Data
+PAK_Data <- subset(FinalDf, name == "PAK")
+colnames(PAK_Data) <- c("Year", "State", "Country","Christians", "Muslims", "Buddhist", "Jains", "Hindus")
+
+PAK_Melted <- melt(PAK_Data, id = c("Year", "State", "Country"), measure.vars = c("Christians", "Muslims", "Buddhist", "Jains", "Hindus") )
+
+# Plotting
+g <- ggplot(PAK_Melted, aes(x = Year, y = value/10000)) + geom_point(size = 2, aes(color=variable)) + labs(title = "Time Series of PAK Population Growth") + labs(x= "Year", y = "10K Population Count")
+ggplotly(g)
+
+
+```
+
+* Hover over each point for more info at that point.
+
+
+## World Religion Project : China Data
+
+```{r CHN, echo=FALSE}
+# China Data
+CHN_Data <- subset(FinalDf, name == "CHN")
+colnames(CHN_Data) <- c("Year", "State", "Country","Christians", "Muslims", "Buddhist", "Jains", "Hindus")
+
+CHN_Melted <- melt(CHN_Data, id = c("Year", "State", "Country"), measure.vars = c("Christians", "Muslims", "Buddhist", "Jains", "Hindus") )
+
+# Plotting
+g <- ggplot(CHN_Melted, aes(x = Year, y = value/10000)) + geom_point(size = 2, aes(color=variable)) + labs(title = "Time Series of CHN Population Growth") + labs(x= "Year", y = "10K Population Count")
+ggplotly(g)
+
+
+```
+
+* Hover over each point for more info at that point.
+
+
+## Sources & References
+
+- Data was obtained from <https://data.world/cow/world-religion-data>
+
+- All the credit for data goes to : 
+
+  - Zeev Maoz and Errol A. Henderson. 2013. “The World Religion Dataset, 
+      1945-2010: Logic, Estimates, and Trends.” International Interactions, 
+      39: 265-291.
+      
+
+
+
+
+
+
+
+
+
+
+
