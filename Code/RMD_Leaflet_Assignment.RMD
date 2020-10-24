@@ -1,0 +1,68 @@
+---
+title: "Amazing Forts in Maharashtra!!"
+author: "Tejus"
+date: "24/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+Date <- Sys.Date()
+```
+
+*** 
+
+## Locations and names of different forts in state of Maharashtra, India 
+
+***
+
+```{r Map, echo=FALSE, warning=FALSE, cache=TRUE, fig.align='center', fig.height=6, fig.width=6}
+
+# Getting the coordinates for Forts in Maharashtra, India
+Data = read.csv("./Forts.csv", header = T)
+FortNames <- Data$FortNames
+
+# creating a dataframe of just coordinates
+Geom <- Data[2:3]
+
+# Adding custom icon
+FortIcon <- makeIcon(
+      iconUrl = "https://s3.ap-southeast-1.amazonaws.com/images.asianage.com/images/aa-Cover-c2a3dlfqmm43b25m9fi45bd1i1-20180429044528.Medi.jpeg",
+      iconWidth = 31*215/230, iconHeight = 31,
+iconAnchorX = 31*215/230/2, iconAnchorY = 16
+)
+
+I_Map <- leaflet(Geom) %>% addTiles() %>% addMarkers( icon = FortIcon, popup = FortNames, clusterOptions = markerClusterOptions())
+I_Map
+
+```
+
+
+****
+
+### Names of those forts
+
+```{r echo=FALSE, warning=FALSE}
+library(formattable)
+Df <- data.frame(matrix(sort(FortNames, decreasing = F), nrow = 48))
+colnames(Df) <- c("A", "B", "H", "K", "P", "S")
+
+# Prettify
+formattable(Df, list(
+      "A" = formatter("span", style = ~ style(color = "dodgerblue",font.weight = "bold")),
+      "B" = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+      "H" = formatter("span", style = ~ style(color = "darkorange",font.weight = "bold")),
+      "K" = formatter("span", style = ~ style(color = "green",font.weight = "bold")),
+      "P" = formatter("span", style = ~ style(color = "steelblue",font.weight = "bold")),
+      "S" = formatter("span", style = ~ style(color = "black",font.weight = "bold"))
+))
+
+```
+
+***
+
+
+### `Thanks for visiting the page!!`
+
+
