@@ -1,0 +1,12 @@
+name: Interactive_Scatterplot_Smoothing
+title: Interactive_Scatterplot_Smoothing
+username:
+account: the-eon-flux
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3089580
+bundleId: 3779285
+url: https://the-eon-flux.shinyapps.io/Interactive_Scatterplot_Smoothing/
+when: 1603606203.55119
+asMultiple: FALSE
+asStatic: FALSE

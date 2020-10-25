@@ -1,0 +1,118 @@
+---
+title: "Linear regression with a spline term"
+subtitle: "Shiny App Pitch"
+author: "Tejus"
+date: "25/10/2020"
+output: 
+  ioslides_presentation: 
+    widescreen: yes
+widescreen: true
+smaller: true
+runtime: "shiny"
+mode        : "selfcontained "
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(shiny)
+library(magick)
+```
+
+## Fitting a functions using linear models
+
+* Consider a model $Y_i = f(X_i) + \epsilon$. 
+
+* The `shiny app` demonstrates fitting such a model using linear models (called scatterplot smoothing)
+
+* The model adds extra terms as below,
+  $$
+  Y_i = \beta_0 + \beta_1 X_i + \sum_{k=1}^d (x_i - \xi_k)_+ \gamma_k + \epsilon_{i}
+  $$
+where $(a)_+ = a$ if $a > 0$ and $0$ otherwise and $\xi_1 \leq ... \leq \xi_d$ are known knot points.
+
+* Application allows the user to add & adjust 2 knot points and demonstrates how the $R^2$
+improves & $\sigma$ is reduced.
+
+
+## The linear model approximation !! 
+
+- Almost always an approximation, and sometimes a poor one.
+
+```{r echo=FALSE, fig.align='center', fig.width=6}
+# Linear fit
+fit1 <- lm(wt ~ disp, mtcars)
+Caption1 <- paste("lm(wt ~ disp)\n","Residual standard error : ", round(summary(fit1)$sigma,4), "  R-square : ", round(summary(fit1)$r.squared,4), sep="" )
+
+plot(mtcars$disp, mtcars$wt, pch = 16, xlab = "Displacement", ylab = "Weight)", main = Caption1  )
+abline(fit1, lwd= 2, col="red")
+
+```
+- The app first shows the shortcomings when launched. 
+
+
+## Interactive improvements suggested !! 
+
+- User has the options to slide & set the 2 breaks points (green lines) to adjust $\sigma$ & $R^2$
+
+
+```{r UI, echo=FALSE, fig.align='center',fig.height=4, fig.width=6}
+x <- mtcars[order(mtcars$disp),]
+
+# Knot terms
+knots <- c(150, 350)
+splineTerms1 <- sapply(knots, function(knot){ifelse(x$disp - knot > 0, (x$disp - knot)^2, 0) })
+
+xMat <- cbind(Intercept = 1, Displacement = x$disp, splineTerms1 )
+colnames(xMat) <- c( "Intercept", "Displacement", "Knot1", "Knot2")
+
+# model fitting
+fit1 <- lm(x$wt ~ disp, x)
+fit2 <- lm(x$wt ~ xMat-1)
+yhat <- predict(fit2)
+
+Caption <- paste("lm(wt ~ disp -xMat - 1)\n","Residual standard error : ", round(summary(fit2)$sigma,4), "  R-square : ", round(summary(fit2)$r.squared,4), sep="" )
+
+
+# Plotting
+plot(mtcars$disp, mtcars$wt, pch = 16, xlab = "Displacement", ylab = "Weight", main = Caption )
+abline(fit1, lwd= 2, col="red")
+lines(x$disp, yhat, lwd = 2, col = "dodgerblue")
+abline(v = knots, lwd = 2, col="green")
+
+```
+
+- **Note : ** for **`r Caption1`**
+
+
+## Demo 
+
+- Uncheck the `Hide spline checkbox` & get started !!
+
+```{r fig.align="left", fig.height=6 ,fig.width= 6, echo=FALSE}
+
+img <- image_read("./Code/Slide.png")
+print(img)
+
+```
+
+## Detailed summary
+
+- You can check for additional parameters and final coefficients in `Summary` tab
+
+```{r fig.align="left", fig.height=6 ,fig.width= 6, echo=FALSE, warning=FALSE, fig.align="center"}
+
+img2 <- image_read("./Code/Slide2.png")
+print(img2)
+
+```
+
+
+
+
+
+
+
+
+
+
+
