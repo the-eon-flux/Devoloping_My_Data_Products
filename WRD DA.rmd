@@ -12,8 +12,10 @@ library(reshape2)
 library(plotly)
 
 Df <- read.csv("./Code/WRP national data.csv", header = T)
+
 ColI <- c(1,2,3,9,22,26,27,28)
 FinalDf <- as.data.frame(Df[,ColI])
+
 
 ```
 
@@ -36,6 +38,7 @@ given religion, **observed at five-year intervals**.
 ```{r Religion, echo = FALSE}
 # India Data
 IND_Data <- subset(FinalDf, name == "IND")
+
 colnames(IND_Data) <- c("Year", "State", "Country","Christians", "Muslims", "Buddhist", "Jains", "Hindus")
 Ind_Melted <- melt(IND_Data, id = c("Year", "State", "Country"), measure.vars = c("Christians", "Muslims", "Buddhist", "Jains", "Hindus") )
 
@@ -103,6 +106,39 @@ ggplotly(g)
 
 * Hover over each point for more info at that point.
 
+## European Countries
+
+```{r EU_Nations, eval=FALSE, echo=FALSE}
+
+# All coutrny IDs
+All_C <- read.csv("./Code/All.csv", header = TRUE)
+Res <- subset(All_C, All_C$region == "Europe")[1:3]
+dim(Res)
+
+colnames(Res) <- c("Country", "2Ltr_Code", "name")
+
+Mer <- merge(FinalDf, Res, by="name", all.x = FALSE)
+Mer <- Mer[, -c(3,6,7,9,10)]
+colnames(Mer) <- c("name", "Year", "Christians", "Muslims", "Hindus")
+
+Mer <- melt(Mer, id = c("name", "Year"), measure.vars = c("Christians", "Muslims", "Hindus") )
+EU_Nations <- unique(Mer$name)
+
+
+pdf("EU_Population_Growth.pdf")
+sapply(EU_Nations, function(Nation){
+    Title = paste("Time Series vs Population Growth for :", Nation, sep = " ")
+    g <- ggplot(Mer[Mer$name == Nation,], aes(x = Year, y = value/10000)) + geom_point(size = 2, aes(color=variable)) + labs(title = Title) + labs(x= "Year", y = "10K Population Count") 
+    plot(g)
+})
+
+dev.off()
+
+g <- ggplot(Mer, aes(x = Year, y = value/10000)) + geom_point(size = 2, aes(color=variable)) + labs(title = "Time Series of EU Nations Population Growth") + labs(x= "Year", y = "10K Population Count") + facet_grid(name~.)
+g
+#ggplotly(g)
+
+```
 
 ## Sources & References
 
@@ -110,8 +146,8 @@ ggplotly(g)
 
 - All the credit for data goes to : 
 
-  - Zeev Maoz and Errol A. Henderson. 2013. “The World Religion Dataset, 
-      1945-2010: Logic, Estimates, and Trends.” International Interactions, 
+  - Zeev Maoz and Errol A. Henderson. 2013. The World Religion Dataset, 
+      1945-2010: Logic, Estimates, and Trends in International Interactions, 
       39: 265-291.
       
 

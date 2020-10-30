@@ -1,0 +1,27 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2020.10.22)  25 OCT 2020 18:58
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**C:/Users/tejus/AppData/Local/Temp/RtmpyAKpW7/file165c74cd4b55.tex
+(c:/Users/tejus/AppData/Local/Temp/RtmpyAKpW7/file165c74cd4b55.tex
+LaTeX2e <2020-10-01> patch level 1
+L3 programming layer <2020-10-05> xparse <2020-03-03>
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 \begin{frame}[
+                  fragile]{Fitting a functions using linear models} 
+Here is how much of TeX's memory you used:
+ 19 strings out of 481886
+ 736 string characters out of 5930463
+ 257915 words of memory out of 5000000
+ 16423 multiletter control sequences out of 15000+600000
+ 535088 words of font info for 29 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 13i,0n,15p,160b,20s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+!  ==> Fatal error occurred, no output PDF file produced!
